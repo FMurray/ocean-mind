@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ocean-mind"
+version = "0.1.0"
+description = "Chat with NOAA climate data"
+authors = ["Forrest Murray <FMurray@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ocean_mind"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.0"
+httpx = "^0.24.1"
+pandas = "^2.0.3"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.24.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
