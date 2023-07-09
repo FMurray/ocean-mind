@@ -65,3 +65,8 @@ custom:
 
 functions:
   - ${file(resources/lambda-and-api-gateway.yml)}
+
+resources:
+  # DynamoDB tables
+  - ${file(resources/dynamodb-table.yml)}
+  

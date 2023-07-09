@@ -4,7 +4,7 @@ runRequestOpenAI:
   description: This lambda runs a request
   runtime: nodejs18.x
   timeout: 30
-  role: arn:aws:iam::#{AWS::AccountId}:role/LambdaEmailRole
+  role: arn:aws:iam::#{AWS::AccountId}:role/RomeGodRole
   environment:
     region: ${self:custom.region}
   tags:
