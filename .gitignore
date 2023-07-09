@@ -1,0 +1,20 @@
+./node_modules
+./build
+/node_modules
+/build
+
+# sls
+/sls/node_modules
+/sls/**/dist
+/sls/**/node_modules
+/sls/**/*.zip
+/sls/**/*.serverless.bak
+/sls/**/*.serverless
+/sls/**/.idea
+/sls/**/build
+/sls/**/turbo
+/sls/**/.turbo
+/sls/lambdas/**/.env
+/sls/**/targetsls/**/*.jar
+
+/sls/**/*.dev-feldman

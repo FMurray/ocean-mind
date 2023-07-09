@@ -1,0 +1,25 @@
+runRequestOpenAI:
+  handler: index.handler
+  name: ${self:custom.appNameU}RunRequestOpenAI-${self:custom.env}
+  description: This lambda runs a request
+  runtime: nodejs18.x
+  timeout: 30
+  role: arn:aws:iam::#{AWS::AccountId}:role/LambdaEmailRole
+  environment:
+    region: ${self:custom.region}
+  tags:
+    BAName: ${self:custom.baName}
+    OwnerContact: ${self:custom.ownerContact}
+    Company: ${self:custom.company}
+    Cost Center: ${self:custom.costCenter}
+  layers:
+    - arn:aws:lambda:${self:custom.region}:#{AWS::AccountId}:layer:openAI:1
+  package:
+    include:
+      - dist/**
+    artifact: ./dist/runRequestAI.zip
+    individually: true
+  events:
+    - http:
+        path: api/v1/run-request
+        method: post

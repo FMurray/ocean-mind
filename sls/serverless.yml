@@ -1,0 +1,67 @@
+service: ocean-mind
+useDotenv: true
+frameworkVersion: '2 || 3'
+variablesResolutionMode: 20210326
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stackName: ${self:custom.company}-${self:custom.appNameL}-${self:custom.environments.${self:custom.env}}
+  region: ${opt:region}
+  endpointType: regional
+  stackTags:
+    BAName: ${self:custom.baName}
+    OwnerContact: ${self:custom.ownerContact}
+    Company: ${self:custom.company}
+  deploymentBucket:
+    name: ${self:custom.appNameL}-deployment-bucket-v1-${self:custom.environments.${self:custom.env}}
+    serverSideEncryption: AES256
+    blockPublicAccess: true
+    tags:
+      - Key: BAName
+        Value: ${self:custom.baName}
+      - Key: OwnerContact
+        Value: ${self:custom.ownerContact}
+      - Key: Company
+        Value: ${self:custom.company}
+      - Key: Cost Center
+        Value: ${self:custom.costCenter}
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-plugin-resource-tagging
+  - serverless-pseudo-parameters
+  - serverless-appsync-plugin
+  - serverless-step-functions
+  - serverless-dotenv-plugin
+  - serverless-prune-plugin
+  - serverless-git-commit-tracker
+  - serverless-plugin-additional-stacks
+
+custom:
+  appNameL: ocean-mind
+  appNameU: OceanMind
+  baName: ocean-mind
+  company: volocrew
+  ownerContact: zach@volocrew.com
+  costCenter: BER
+  dotenv:
+    exclude:
+      - AWS_PROFILE
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
+  stage: ${opt:stage, self:provider.stage}
+  # Set the table name here so we can use it while testing locally
+  env: ${self:custom.stage}
+  # region
+  region: ${opt:region}
+  # region
+  environments:
+    Dev-Feldman: dev-feldman
+    Prod: prod
+
+functions:
+  - ${file(resources/lambda-and-api-gateway.yml)}

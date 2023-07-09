@@ -1,0 +1,45 @@
+{
+  "name": "sls",
+  "version": "1.0.0",
+  "description": "This package is for sls",
+  "config": {
+    "region": "us-east-1"
+  },
+  "scripts": {
+    "deploy:prod": "sls deploy --stage Prod --aws-profile volo --region $npm_package_config_region",
+    "predeploy:dev:feldmann": "npm run build:lambdas",
+    "deploy:dev:feldman": "sls deploy --stage Dev-Feldman --aws-profile volo --region $npm_package_config_region",
+    "destroy:dev:feldman": "sls remove --stage Dev-Feldman  --aws-profile volo --region $npm_package_config_region",
+    "destroy:prod": "sls remove --stage Prod --aws-profile volo --region $npm_package_config_region",
+    "build:lambdas": "bash scripts/build-lambdas.sh"
+  },
+  "author": "Zachary Feldman",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^11.13.4",
+    "aws-appsync": "~1.8.1",
+    "aws-sdk": "^2.487.0",
+    "asl-validator": "^1.10.0",
+    "serverless-deployment-bucket": "^1.6.0",
+    "serverless-appsync-plugin": "^1.14.0",
+    "serverless-dotenv-plugin": "^4.0.2",
+    "serverless-git-commit-tracker": "^0.3.0",
+    "serverless-plugin-resource-tagging": "^1.1.0",
+    "serverless-plugin-fastdeploy": "^0.0.3",
+    "serverless-plugin-scripts": "^1.0.2",
+    "serverless-prune-plugin": "^2.0.1",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-s3-deploy": "^0.10.1",
+    "serverless-step-functions": "^2.32.0",
+    "ts-node": "^8.1.0",
+    "typescript": "3.5.3",
+    "graphql-tag": "^2.10.1",
+    "@types/node-fetch": "^2.5.7",
+    "isomorphic-fetch": "^2.2.1",
+    "node-fetch": "^2.6.0"
+  },
+  "dependencies": {
+    "serverless": "^2.72.3",
+    "serverless-plugin-additional-stacks": "^1.6.0"
+  }
+}

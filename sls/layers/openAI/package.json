@@ -1,0 +1,18 @@
+{
+  "name": "openai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+
+  "scripts": {
+    "zipit": "bash utils/zipit.sh",
+    "predeploy": "aws s3 cp openAI.zip s3://volo-lambda-layers/nodejs/ --profile volo",
+    "deploy": "aws lambda publish-layer-version --layer-name open-ai --description \"My custom layer for open ai deps\" --compatible-runtimes nodejs14.x --content S3Bucket=volo-lambda-layers,S3Key=nodejs --region us-east-1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dep": "^0.18.3",
+    "langchain": "0.0.104"
+  }
+}
