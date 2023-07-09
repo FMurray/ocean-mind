@@ -1,8 +1,4 @@
-# langchain-ts-starter
-
-Boilerplate to get started quickly with the [Langchain Typescript SDK](https://github.com/hwchase17/langchainjs).
-
-This uses the same tsconfig and build setup as the [examples repo](https://github.com/hwchase17/langchainjs/tree/main/examples), to ensure it's in sync with the official docs.
+# run request ai
 
 # What's included
 
@@ -20,3 +16,12 @@ This uses the same tsconfig and build setup as the [examples repo](https://githu
 - Write your code in `src`
 - `npx turbo run build lint format` to run build scripts quickly in parallel
 - `npm start` to run your program
+
+# how to curl the endpoint
+Pass in the agency name you would like to make the request on
+```
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"agency": "NOAA"}' \
+  https://44m6gns240.execute-api.us-east-1.amazonaws.com/Dev-Feldman/api/v1/run-request-ai
+  ```

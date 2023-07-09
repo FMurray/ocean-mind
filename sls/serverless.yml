@@ -5,7 +5,7 @@ variablesResolutionMode: 20210326
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   stackName: ${self:custom.company}-${self:custom.appNameL}-${self:custom.environments.${self:custom.env}}
   region: ${opt:region}
   endpointType: regional

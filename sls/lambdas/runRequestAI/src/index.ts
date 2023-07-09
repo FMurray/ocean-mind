@@ -1,55 +1,63 @@
 import * as dotenv from "dotenv";
-import { OpenAI } from "langchain";
+import { OpenAI, PromptTemplate, LLMChain } from "langchain";
 const allowOrigin = "https://ocean-mind.ai";
-
 
 dotenv.config();
 
 export const handler: any = async (
-  event: any,
-  context: any,
-  callback: any
-): Promise<void> => {
+  event: any): Promise<any> => {
   console.log(event);
-  console.log(context);
 
-  const payload: { message: string } = event.body;
+  let payload: { agency: string } = {agency: ''};
 
-  if (payload && !payload.message) {
-    const error = new Error("email, name");
-
-    const response = {
-      statusCode: 400,
-      body: event.body,
-      "Access-Control-Allow-Origin": allowOrigin,
-    };
-    callback(null, response);
-    throw error;
+  if (typeof event.body === 'string') {
+    try {
+      payload = JSON.parse(event.body);
+    } catch (error) {
+      // Handle parsing error
+      console.error('Error parsing event body:', error);
+      const response = {
+        statusCode: 400,
+        body: 'Invalid request body',
+        "Access-Control-Allow-Origin": allowOrigin,
+      };
+      return response;
+    }
+  } else {
+    payload = event.body;
   }
+
+  // Ensure payload has the expected structure
+  const { agency } = payload;
 
   const model = new OpenAI({
     modelName: "gpt-3.5-turbo",
     openAIApiKey: process.env.OPENAI_API_KEY,
+    temperature: 0.9
   });
 
-  console.log(`payload.message: ${payload.message}`)
+  const template = "Tell me something about this agency {agency}?";
 
-  const res = await model.call(
-    "Tell me something about NOAA?"
-  );
-  console.log(res);
+  const prompt = new PromptTemplate({
+    template: template,
+    inputVariables: ["agency"],
+  });
 
-  event.body = {
-    ...event.body,
-    res,
-  };
+  const chain = new LLMChain({ llm: model, prompt: prompt });
+
+  const resChain = await chain.call({ agency });
+
+  console.log(resChain);
+
+  console.log('returning back')
 
   const response = {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": allowOrigin,
     },
-    body: event.body,
+    body: JSON.stringify(resChain),
   };
-  callback(null, response);
+  
+  return response;
 };

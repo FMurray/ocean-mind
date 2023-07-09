@@ -21,5 +21,5 @@ runRequestOpenAI:
     individually: true
   events:
     - http:
-        path: api/v1/run-request
+        path: api/v1/run-request-ai
         method: post
