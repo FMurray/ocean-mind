@@ -16,6 +16,8 @@ jupysql = "^0.7.9"
 duckdb-engine = "^0.9.0"
 matplotlib = "^3.7.2"
 notebook = "^6.5.4"
+tqdm = "^4.65.0"
+pyarrow = "^12.0.1"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.24.0"
