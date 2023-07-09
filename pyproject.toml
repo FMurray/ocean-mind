@@ -11,6 +11,11 @@ python = "^3.11"
 python-dotenv = "^1.0.0"
 httpx = "^0.24.1"
 pandas = "^2.0.3"
+duckdb = { version="^0.8.1", allow-prereleases = true}
+jupysql = "^0.7.9"
+duckdb-engine = "^0.9.0"
+matplotlib = "^3.7.2"
+notebook = "^6.5.4"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.24.0"
