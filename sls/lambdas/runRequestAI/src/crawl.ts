@@ -1,66 +1,53 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import url from 'url';
 
-export async function crawl(url: string): Promise<string> {
-  const { data } = await axios.get(url);
-  const $ = cheerio.load(data);
-  let text = $('body').text();
-  // Replace anything within angled brackets, which should remove residual HTML tags
-  text = text.replace(/<[^>]*>/g, '');
-  // Replace multiple whitespaces, line breaks, and tabs with a single space
-  text = text.replace(/\s\s+/g, ' ');
-  // Trim leading and trailing spaces
-  text = text.trim();
-  return text;
+async function getTextFromURL(targetUrl: string): Promise<string> {
+    const { data } = await axios.get(targetUrl);
+    const $ = cheerio.load(data);
+    let text = $('body').text();
+    text = text.replace(/\s\s+/g, ' ');
+    text = text.trim();
+    return text;
 }
 
-// Define the initial URL to start crawling
-// const initialUrl = 'https://noaa.gov';
+async function getLinksFromURL(targetUrl: string, baseUrl: string): Promise<string[]> {
+    const { data } = await axios.get(targetUrl);
+    const $ = cheerio.load(data);
+    const links: string[] = [];
+    $('a').each((i, link) => {
+        const href = $(link).attr('href');
+        if (href) {
+            // Resolve relative links
+            links.push(url.resolve(baseUrl, href));
+        }
+    });
+    return links;
+}
 
-// Set of visited URLs to avoid revisiting the same page
-// const visitedUrls: Set<string> = new Set();
+export async function crawlWebsite(startUrl: string, baseUrl: string): Promise<{ url: string, text: string }[]> {
+    const visitedLinks: Set<string> = new Set();
+    const texts: { url: string, text: string }[] = [];
 
-// Function to crawl a URL and extract plain text
-// export async function crawl(url: string): Promise<string> {
-//   return new Promise<string>(async (resolve, reject) => {
-//     // Avoid revisiting the same page
-//     if (visitedUrls.has(url)) {
-//       resolve('');
-//       return;
-//     }
+    async function crawlPage(pageUrl: string) {
+        if (visitedLinks.has(pageUrl)) {
+            return;
+        }
 
-//     // Mark the URL as visited
-//     visitedUrls.add(url);
+        console.log(`Crawling ${pageUrl}`);
+        visitedLinks.add(pageUrl);
 
-//     try {
-//       const response = await axios.get(url);
-//       const html = response.data;
-//       const $ = cheerio.load(html);
+        // Extract and store text
+        const text = await getTextFromURL(pageUrl);
+        texts.push({ url: pageUrl, text });
 
-//       // Extract plain text from the page
-//       const plainText = $('body').text();
+        // Extract links and crawl each one
+        const links = await getLinksFromURL(pageUrl, baseUrl);
+        for (const link of links) {
+            await crawlPage(link);
+        }
+    }
 
-//       // Extract URLs from the page and crawl them recursively
-//       const links = $('a');
-//       const crawlPromises: Promise<string>[] = [];
-//       links.each((index, element) => {
-//         const linkUrl = $(element).attr('href');
-//         if (linkUrl) {
-//           // Resolve relative URLs
-//           const absoluteUrl = new URL(linkUrl, url).href;
-//           // Recursively crawl the discovered URL and collect the promises
-//           crawlPromises.push(crawl(absoluteUrl));
-//         }
-//       });
-
-//       // Wait for all the recursive crawl promises to resolve
-//       const results = await Promise.all(crawlPromises);
-
-//       // Concatenate all the plain text results and resolve the promise
-//       const allPlainText = [plainText, ...results].join(' ');
-//       resolve(allPlainText);
-//     } catch (error) {
-//       reject(error);
-//     }
-//   });
-// }
+    await crawlPage(startUrl);
+    return texts;
+}

@@ -4,7 +4,7 @@ import { PromptTemplate, LLMChain } from "langchain";
 import { BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
-import { crawl } from "./crawl.ts";
+import { crawlWebsite } from "./crawl.ts";
 const allowOrigin = "https://ocean-mind.ai";
 
 dotenv.config();
@@ -90,27 +90,29 @@ export const handler: any = async (
   const parsedArray = parseArrayFromText(conversationChain.response);
   console.log(parsedArray);
 
-  console.log('About to crawl this url', parsedArray[0].url)
+  console.log('About to crawl this url', 'https://noaa.gov')
 
   // Start crawling from the initial URL
-  let plainText = ''
+  let results: {url: string; text: string}[] = [];
   try {
-    // const plainText = await crawl(parsedArray[0].url);
-    plainText = await crawl(parsedArray[0].url);
-    console.log(`plainText: ${plainText}`)
+    results = await crawlWebsite('https://noaa.gov', 'https://noaa.gov');
+    for (const result of results) {
+      console.log(`URL: ${result.url}`);
+      console.log(`Text: ${result.text}`);
+    }
   } catch (err) {
-    console.log('error crawling...')
     console.error(err);
   }
 
-  const template = `From this site ${parsedArray[0].url} I've scraped this info \"\"{text}\"\". Please write 5 captivating tweets that include the url in the response`;
+  const template = `From this site https://noaa.gov I've scraped this info which includes url pages and text associated with each: \"\"{text}\"\". Please write 5 fun fact tweets that include the respective url from the page it came from in the response`;
+  console.log(`template ${template}`)
   const prompt = new PromptTemplate({
     template: template,
     inputVariables: ["text"],
   });
 
   const chain2 = new LLMChain({ llm: model, prompt: prompt, memory: memory });
-  const tempChain = await chain2.call({ text: plainText });
+  const tempChain = await chain2.call({ text: JSON.stringify(results) });
 
   console.log(tempChain);
 
