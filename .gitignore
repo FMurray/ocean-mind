@@ -1,3 +1,39 @@
 # python 
 **/__pycache__/
 **/*.pyc
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+ocean-mind-app/node_modules
+ocean-mind-app/.pnp
+ocean-mind-app/.pnp.js
+
+# testing
+ocean-mind-app/coverage
+
+# next.js
+ocean-mind-app/.next/
+ocean-mind-app/out/
+
+# production
+ocean-mind-app/build
+
+# misc
+ocean-mind-app/.DS_Store
+ocean-mind-app/*.pem
+
+# debug
+ocean-mind-app/npm-debug.log*
+ocean-mind-app/yarn-debug.log*
+ocean-mind-app/yarn-error.log*
+
+# local env files
+ocean-mind-app/.env*.local
+
+# vercel
+ocean-mind-app/.vercel
+
+# typescript
+ocean-mind-app/*.tsbuildinfo
+ocean-mind-app/next-env.d.ts
