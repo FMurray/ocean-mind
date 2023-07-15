@@ -14,9 +14,9 @@ query = {
 fetcher = AsyncPaginatedFetcher(
     'https://data.noaa.gov/onestop/api/search/search/collection',
     query,
-    5000, 
-    results_per_page=20,
-    n_workers=10,
+    10000, 
+    results_per_page=40,
+    n_workers=20,
 )
 
 asyncio.run(fetcher.fetch_all())

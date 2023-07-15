@@ -1,9 +1,7 @@
 import asyncio
 import httpx
 import pandas as pd
-from time import time, sleep
-from tqdm.asyncio import tqdm_asyncio
-import json
+from time import sleep, time
 
 class AsyncPaginatedFetcher():
     def __init__(self, base_url, query, total_results, n_workers=10, results_per_page=20, result_handler=callable):
@@ -84,13 +82,12 @@ class AsyncPaginatedFetcher():
                     try:
                         data = response.json()
                         df = pd.json_normalize(data['data'])
+                        dtypes = df.dtypes
                         df['attributes.spatialBounding.coordinates'] = df['attributes.spatialBounding.coordinates'].astype(str)
                         df['attributes.dataFormats'] = df['attributes.dataFormats'].astype(str)
                         df['onestop_query'] = self.query_text
                         self.results_processed += df.shape[0]
-
-                        # print(df.shape)
-                        # df.to_parquet(f"./data/onestop/{int(time())}.parquet")
+                        df.to_parquet(f"./data/onestop/{int(time())}.parquet")
                     except Exception as e:
                         print(f"Exception while writing to file: {str(e)}")
                         with open(f"./data/onestop/logs.txt", 'a') as f:
