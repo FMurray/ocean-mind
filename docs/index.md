@@ -1,4 +1,6 @@
-# Working Backwards 
+# Working Backwards From the Customer
+
+Working backwards is an approach used by Amazon when developing new products, services, or technologies which starts by thinking about the customer and then works backwards to the solution. This process is designed to ensure that we build the right thing.
 
 ## Who is the customer and what insights do we have about them? 
 
@@ -50,3 +52,25 @@ Success can be measured in several ways:
 
 
 By measuring these metrics, we can understand how successful the tool is and where improvements need to be made.
+
+
+
+# Example Use Case: Offshore Energy Project Implementation
+
+
+In the given use case, the proposed solution offers several benefits and insights:
+
+Centralized Data Access: With data from various stakeholders stored in a single data lake, everyone involved in the project can access the necessary information from a single source. This eliminates the need to navigate through different databases or request data from other stakeholders, speeding up the process and ensuring everyone is working with the same information.
+
+1. Improved Data Discoverability: The AI/LLM tool can help stakeholders find specific information quickly and easily. For example, a public stakeholder interested in the environmental impact of the project could ask the tool, "What is the projected impact of the offshore wind project on marine life in Oregon?" and receive a clear, concise answer.
+
+2. Customized Information: Different stakeholders have different levels of comprehension and need different types of information. The AI/LLM tool can provide customized information based on who is asking the question. For example, a researcher from NANOOS might need detailed data on oceanographic conditions, while a public stakeholder might need a simpler explanation of the project's impact, or a Departmental offical might need an executive summary to present to Congress. 
+
+3. Efficient Resource Utilization: By leveraging AI/LLMs and Data Lakes, the need for dedicated technical resources to manage and interpret the data is significantly reduced. This not only lowers the total operating cost but also allows these resources to be utilized for other critical tasks.
+
+4. Enhanced Collaboration: The proposed solution can enhance collaboration among stakeholders by providing a common platform for data access and interpretation. This can lead to better decision-making and more successful project implementation. Instead of requiring long back and forth email chains, question answering and collaboration can be expedited by LLM-backed workflows, accelerating the project's time to success.
+
+5. Compliance with Government Policies: The solution is designed to operate within a government setting and complies with all relevant rules and policies. This ensures that all data handling and interpretation are done in a legally compliant manner.
+Additionally, the LLM can answer questions (with sources) about government policies and how to comply with them. 
+
+6. Scalability: The proposed solution is scalable and can handle an increasing amount of data as the project progresses. This ensures that the tool remains useful and efficient throughout the project's lifecycle. Stakeholder specific Data repositories like DOE, or NOAA repositories can be re-used across projects. 
